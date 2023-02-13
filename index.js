@@ -34,11 +34,16 @@ app.get("/showuser/:email",(req,res)=>{
     })
 })
 
-const PORT =process.env.PORT || 3000
-app.get("/test",(req,res)=>{
-    res.json({"message":"working"})
+//delete user
+app.delete("/deleteuser/:email",(req,res)=>{
+    let email=req.params.email
+    let sql=`Delete from employee where email ='${email}'`
+    db.query(sql,(err,result)=>{
+        if(err) throw err
+        else res.json(result)
+    })
 })
-
+PORT=3000
 app.listen(PORT,() =>console.log(`Server is running at ${PORT}`))
 
 
