@@ -43,6 +43,20 @@ app.delete("/deleteuser/:email",(req,res)=>{
         else res.json(result)
     })
 })
+
+//update user
+app.put("/updateuser/:email",(req,res)=>{
+    let email=req.params.email
+    const name=req.body.name
+    const phone=req.body.phone
+    const city=req.body.city 
+    let sql=`update employee SET name ='${name}',phone='${phone}',city='${city}'`
+    db.query(sql,(err,result)=>{
+        if(err) throw err
+        else res.json(result)
+    })
+})
+
 PORT=3000
 app.listen(PORT,() =>console.log(`Server is running at ${PORT}`))
 
