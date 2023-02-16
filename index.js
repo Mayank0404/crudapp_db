@@ -1,12 +1,24 @@
 const express=require('express')
 const app =express()
 const db=require('./model/connection')
-app.use(express.json())
+const engine=require('express-handlebars').engine
+app.use(express.json()) // middle ware
+app.use(express.urlencoded({extended:true}))
+
+app.engine('handlebars', engine());
+app.set('view engine', 'handlebars');
+app.set('views', './views');
+
+//default page
+app.get('/',(req,res)=>{
+    res.render('home')  
+})
+
 
 //create user
 app.post("/adduser",(req,res)=>{
     
-    const user={name:req.body.name,email:req.body.email,city:req.body.city,phone:req.body.mobile}
+    const user={name:req.body.name,email:req.body.email,city:req.body.city,phone:req.body.phone}
     let sql="Insert into `employee` SET ?"
     db.query(sql,user,(err,result)=>{
         if(err) throw err
@@ -21,11 +33,15 @@ app.get("/showuser",(req,res)=>{
     let sql="Select * from `employee`"
     db.query(sql,(err,result)=>{
         if(err) throw err
-        else res.json(result)
+        else{
+             
+             res.render('show',{list:result})
+             
+        } 
     })
 })
-// show a particular user
 
+// show a particular user
 app.get("/showuser/:email",(req,res)=>{
     let sql=`Select * from employee where email ='${req.params.email}'`
     db.query(sql,(err,result)=>{
@@ -35,17 +51,18 @@ app.get("/showuser/:email",(req,res)=>{
 })
 
 //delete user
-app.delete("/deleteuser/:email",(req,res)=>{
-    let email=req.params.email
-    let sql=`Delete from employee where email ='${email}'`
+app.get("/deleteuser/:email",(req,res)=>{
+   
+    let sql=`Delete from employee where email ='${req.params.email}'`
     db.query(sql,(err,result)=>{
         if(err) throw err
-        else res.json(result)
+        else res.redirect("/showuser")
     })
 })
 
 //update user
-app.put("/updateuser/:email",(req,res)=>{
+app.get("/updateuser/:email",(req,res)=>{
+    console.log("hello");
     let email=req.params.email
     const name=req.body.name
     const phone=req.body.phone
@@ -63,4 +80,4 @@ app.listen(PORT,() =>console.log(`Server is running at ${PORT}`))
 
 
 
-
+ 
