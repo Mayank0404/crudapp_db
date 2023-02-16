@@ -22,7 +22,8 @@ app.post("/adduser",(req,res)=>{
     let sql="Insert into `employee` SET ?"
     db.query(sql,user,(err,result)=>{
         if(err) throw err
-        else res.json(result)
+        else 
+        res.render('home')  
 
     })
 
@@ -61,17 +62,31 @@ app.get("/deleteuser/:email",(req,res)=>{
 })
 
 //update user
-app.get("/updateuser/:email",(req,res)=>{
-    console.log("hello");
+app.post("/updateuser/:email",(req,res)=>{
     let email=req.params.email
     const name=req.body.name
     const phone=req.body.phone
     const city=req.body.city 
-    let sql=`update employee SET name ='${name}',phone='${phone}',city='${city}'`
+    let sql=`update employee SET name ='${name}',phone='${phone}',city='${city}' where email='${email}'`
     db.query(sql,(err,result)=>{
         if(err) throw err
-        else res.json(result)
+        else{
+            res.redirect("/showuser")
+        }
+        
     })
+})
+app.get("/edituser/:email",(req,res)=>{
+    console.log(req.params.email);
+    // res.render('edit')
+    let sql=`Select * from employee where email ='${req.params.email}'`
+    db.query(sql,(err,result)=>{
+        if(err) throw err
+        else 
+        res.render('edit',({list:result}))
+    })
+
+
 })
 
 PORT=3000
