@@ -76,9 +76,9 @@ app.post("/updateuser/:email",(req,res)=>{
         
     })
 })
+//edit user
 app.get("/edituser/:email",(req,res)=>{
-    console.log(req.params.email);
-    // res.render('edit')
+    
     let sql=`Select * from employee where email ='${req.params.email}'`
     db.query(sql,(err,result)=>{
         if(err) throw err
