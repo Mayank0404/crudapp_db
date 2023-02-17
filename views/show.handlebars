@@ -15,9 +15,9 @@
     {{#each list }}
     <tr class="table-active">
       <th scope="row">{{this.email}}</th>
-      <td contenteditable='true'>{{this.name}}</td>
-      <td contenteditable='true'>{{this.city}}</td>
-      <td contenteditable='true'>{{this.phone}}</td>
+      <td >{{this.name}}</td>
+      <td >{{this.city}}</td>
+      <td >{{this.phone}}</td>
       <td><a href="/deleteuser/{{this.email}}" class="btn btn-danger btn-block">Delete</a></td>
       
       <td ><a href="/edituser/{{this.email}}" class="btn btn-success btn-block">EDIT</a></td>
